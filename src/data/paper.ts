@@ -4,7 +4,7 @@ export const project = {
   description: 'Evaluating AI agents on open-ended, multi-screen design tasks in native Figma, with expert-grounded rubrics and professional designer preferences.',
   github: 'https://github.com/PCNNgyy/figma-design-benchmark',
   arxiv: '',
-  authors: [] as string[],
+  authors: ['Xinyue Huang', 'Yongyong Gao', 'Zhengyuan Pan', 'Xinya Liu', 'Zheng Ma', 'Lewei Lu', 'Dahua Lin'],
 };
 
 export const dimensions = [

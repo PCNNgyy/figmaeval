@@ -24,3 +24,5 @@ dialog{border:1px solid #e5dff0;border-radius:14px;padding:0;max-width:1100px;wi
 
 .task-tabs button{flex-shrink:0}
 .hero-stage{overflow-x:clip}
+.project-brand{display:flex;justify-content:flex-start;margin-top:16px}.project-brand img{width:144px;height:auto}.authors{line-height:1.8}.authors>span{display:block}
+@media(max-width:800px){.project-brand{justify-content:center}}
