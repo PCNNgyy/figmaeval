@@ -8,7 +8,13 @@ const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getEleme
 const escapeHtml = (value: string) => value.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
 
 const tabs = [...document.querySelectorAll<HTMLButtonElement>('[data-task]')];
+const previewTask = $<HTMLSelectElement>('preview-task');
+const previews = document.querySelectorAll<HTMLElement>('[data-preview]');
+previewTask.addEventListener('change', () => selectTask(previewTask.selectedIndex));
+
 function selectTask(index: number, focus = false) {
+  previewTask.selectedIndex = index;
+  previews.forEach((preview,i) => { preview.hidden = i !== index; });
   tabs.forEach((tab,i) => {
     tab.setAttribute('aria-selected', String(i === index));
     tab.tabIndex = i === index ? 0 : -1;

@@ -4,7 +4,7 @@
 
 Interactive project page for **FigmaEval: A Benchmark for Evaluating AI Agents in Professional UI Design**.
 
-Includes five task comparisons from the paper, a recorded Foodgo screenshot sequence, an eleven-model results table with search and sorting, a six-dimension comparison chart, the paper PDF, and a copyable citation. The site builds to static files for GitHub Pages.
+The homepage opens with a two-model design preview and links to the benchmark, examples, process, evaluation, results, and resources. It includes five task comparisons from the paper, a recorded Foodgo screenshot sequence, an eleven-model results table with search and sorting, a six-dimension comparison chart, the paper PDF, and a copyable citation. The site builds to static files for GitHub Pages.
 
 ## Local development
 
@@ -22,7 +22,7 @@ npm run preview
 
 ## Content
 
-Edit `src/data/paper.ts` for project links, author names, model results, task examples, and replay steps. Set `project.arxiv` to the official arXiv abstract URL when available; the paper buttons otherwise open `public/paper/figmaeval.pdf`. Add the official author list to `project.authors` and update the citation in `src/pages/index.astro` when publication metadata is available.
+Edit `src/data/paper.ts` for project links, author names, model results, task examples, and replay steps. Set `project.arxiv` to the official arXiv abstract URL when available; the paper buttons otherwise open `public/paper/figmaeval.pdf`.
 
 Model scores reproduce the eleven-model main results table in the supplied paper. Overall rubric percentages use the 53-point total; six dimension percentages use their respective maximum scores. Showcase screens are viewport excerpts of the original paper figure. The process viewer shows five selected observations from a recorded Foodgo run, with playback controls for browsing the sequence.
 
@@ -39,6 +39,8 @@ SITE_URL=https://pcnngyy.github.io BASE_PATH=/figmaeval/ npm run build
 The standalone website repository is `PCNNgyy/figmaeval`, with the Pages URL `https://pcnngyy.github.io/figmaeval/`. The generated `dist/` directory can also be served by any static host. Local development uses `http://localhost:4321/figmaeval/`. This repository contains no Sites hosting identity or account configuration.
 
 ## Credits
+
+The split research introduction, interactive preview, separate author row, and section navigation take layout inspiration from the [OpenMobile-2 project page](https://os-copilot.github.io/OpenMobile2-Home/).
 
 Adapted from [Roman Hauksson's Academic Project Astro Template](https://github.com/RomanHauksson/academic-project-astro-template), derived from the Eliahu Horwitz academic project page and Nerfies. Template-derived material is provided under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), with attribution retained in the page footer. This does not grant a blanket license to the paper, benchmark, or showcased design assets.
 
