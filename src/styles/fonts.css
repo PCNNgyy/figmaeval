@@ -61,3 +61,11 @@
   font-display: swap;
   src: url(../../public/fonts/font-8.ttf) format('truetype');
 }
+
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(../../public/fonts/instrument-serif-italic.ttf) format('truetype');
+}

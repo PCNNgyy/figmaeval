@@ -4,7 +4,7 @@
 
 Interactive project page for **FigmaEval: A Benchmark for Evaluating AI Agents in Professional UI Design**.
 
-The homepage opens with a two-model design preview and links to the benchmark, examples, process, evaluation, results, and resources. It includes five task comparisons from the paper, a recorded Foodgo screenshot sequence, an eleven-model results table with search and sorting, a six-dimension comparison chart, the paper PDF, and a copyable citation. The site builds to static files for GitHub Pages.
+The homepage opens with a five-task animated gallery of paired model outputs, with pause, task navigation, and click-to-enlarge controls and links to the benchmark, examples, process, evaluation, results, and resources. Readers can view examples side by side or drag a divider across the two model outputs. The site includes five task comparisons from the paper, a recorded Foodgo screenshot sequence, an eleven-model results table with search and sorting, a six-dimension comparison chart, the paper PDF, and a copyable citation. The site builds to static files for GitHub Pages.
 
 ## Local development
 
@@ -44,4 +44,4 @@ The split research introduction, interactive preview, separate author row, and s
 
 Adapted from [Roman Hauksson's Academic Project Astro Template](https://github.com/RomanHauksson/academic-project-astro-template), derived from the Eliahu Horwitz academic project page and Nerfies. Template-derived material is provided under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), with attribution retained in the page footer. This does not grant a blanket license to the paper, benchmark, or showcased design assets.
 
-DM Sans and Manrope are self-hosted. Their SIL Open Font License notices are included in `public/fonts/`.
+DM Sans, Manrope, and Instrument Serif are self-hosted. Their SIL Open Font License notices are included in `public/fonts/`.

@@ -19,7 +19,7 @@ const icons = {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={project.description} />
-    <meta name="theme-color" content="#141522" />
+    <meta name="theme-color" content="#faf9f5" />
     <meta property="og:title" content={project.title} />
     <meta property="og:description" content={project.description} />
     <meta property="og:type" content="website" />
@@ -36,10 +36,8 @@ const icons = {
       <div class="masthead-inner page-width">
         <a class="site-brand" href="#main"><img src={`${base}favicon.svg`} width="28" height="28" alt="" />FigmaEval</a>
         <nav aria-label="Page sections">
-          {[
-            ['overview', 'Overview'], ['benchmark', 'Benchmark'], ['showcase', 'Examples'],
-            ['process', 'Process'], ['evaluation', 'Evaluation'], ['results', 'Results'], ['paper', 'Resources']
-          ].map(([id, label]) => <a href={`#${id}`}>{label}</a>)}
+          <a href="#benchmark">Benchmark</a><a href="#showcase">Gallery</a><a href="#results">Results</a>
+          <a class="nav-paper" href={project.arxiv || paper} target="_blank" rel="noopener noreferrer">Paper ↗</a>
         </nav>
       </div>
     </header>
@@ -47,39 +45,48 @@ const icons = {
       <section class="research-cover hero" aria-labelledby="hero-title">
         <div class="cover-layout page-width">
           <div class="cover-intro">
-            <h1 id="hero-title">Figma<span>Eval</span></h1>
+            <h1 id="hero-title">Figma<em>Eval</em></h1>
             <p class="cover-title">{project.title.split(': ')[1]}</p>
-            <p class="cover-summary">Give two agents the same brief, components, and images. How do their design decisions differ? FigmaEval evaluates the screens they create and the editable Figma files behind them.</p>
-            <ul class="cover-points">
-              <li><strong>84 design tasks</strong> spanning 783 required screens.</li>
-              <li><strong>22 professional design rubrics</strong> across six dimensions.</li>
-              <li><strong>11 models</strong> compared with blinded designer preferences.</li>
-            </ul>
+            <p class="cover-summary">One brief, many possible interfaces. See what AI agents build in Figma and how their work holds up to professional design review.</p>
             <div class="resource-links">
               <a class="button cover-primary" href={project.arxiv || paper} target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={icons.paper} /></svg>{project.arxiv ? 'arXiv paper' : 'Paper PDF'}</a>
               <a class="button cover-secondary" href={project.github} target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={icons.github} /></svg>GitHub</a>
-              <a class="cover-results" href="#results">Results <span aria-hidden="true">↓</span></a>
+              <a class="cover-results" href="#showcase">Gallery <span aria-hidden="true">↘</span></a>
             </div>
           </div>
-          <div class="design-canvas">
-            <div class="canvas-toolbar">
-              <label for="preview-task">Design preview</label>
-              <select id="preview-task" aria-controls="cover-examples">{tasks.map((task,i) => <option value={i}>{task.name}</option>)}</select>
+          <div class="design-canvas" aria-label="Design gallery">
+            <div class="canvas-window">
+              <div id="cover-examples">
+                {tasks.map((task,i) => <div class="canvas-example" data-preview={i} hidden={i !== 0} style={`--canvas-color:${['#cee88c','#90d4d2','#c1b4f1','#edb392','#acc5ed'][i]}`}>
+                  <div class="canvas-pair">
+                    {['Claude Opus 5.5', 'GPT-6.1 Sol'].map((model,j) => <figure style={`--ratio:${task.crops[j][2] / task.crops[j][3]}`}>
+                      <button type="button" class="canvas-phone" data-zoom data-caption={`${task.name} · ${task.screen} · ${model}`} aria-label={`Enlarge ${model} design for ${task.name}`}>
+                        <PaperCrop crop={task.crops[j]} alt={`${model} · ${task.screen}`} eager={i === 0} />
+                      </button>
+                      <figcaption>{model}</figcaption>
+                    </figure>)}
+                  </div>
+                </div>)}
+              </div>
             </div>
-            <div id="cover-examples" aria-live="polite">
-              {tasks.map((task,i) => <div class="canvas-example" data-preview={i} hidden={i !== 0}>
-                <div class="canvas-pair">
-                  {['Claude Opus 5.5', 'GPT-6.1 Sol'].map((model,j) => <figure style={`--preview-ratio:${task.crops[j][2] / task.crops[j][3]}`}>
-                    <PaperCrop crop={task.crops[j]} alt={`${model} · ${task.screen}`} eager={i === 0} />
-                    <figcaption>{model}</figcaption>
-                  </figure>)}
-                </div>
-                <div class="canvas-footer"><strong>{task.screen}</strong><a href="#showcase">Compare designs <span aria-hidden="true">↘</span></a></div>
-              </div>)}
+            <div class="gallery-controls">
+              <div class="gallery-name">
+                <label class="sr-only" for="preview-task">Choose a design task</label>
+                <select id="preview-task" aria-controls="cover-examples">{tasks.map((task,i) => <option value={i}>{task.name}</option>)}</select>
+                <a id="gallery-detail" href="#showcase">{tasks[0].screen} ↘</a>
+              </div>
+              <div class="gallery-transport" role="group" aria-label="Gallery playback">
+                <button type="button" id="previous-preview" aria-label="Previous design task">←</button>
+                <button type="button" id="gallery-play" aria-label="Play gallery"><span aria-hidden="true">▶</span></button>
+                <button type="button" id="next-preview" aria-label="Next design task">→</button>
+              </div>
             </div>
           </div>
         </div>
       </section>
+      <div class="scale-band" aria-label="Benchmark at a glance">
+        <dl class="page-width">{[['84','design tasks'], ['783','required screens'], ['22','design rubrics'], ['11','models']].map(([number,label]) => <div><dt>{label}</dt><dd>{number}</dd></div>)}</dl>
+      </div>
       <div class="research-byline page-width">
         <img src={asset('sensenova-logo.png')} alt="SenseNova" width="144" height="54" />
         <p aria-label="Authors">{project.authors.map((name,i) => <span>{name}{i < project.authors.length - 1 ? ',' : ''}</span>)}</p>
@@ -117,6 +124,10 @@ const icons = {
         <div class="task-tabs" role="tablist" aria-label="Design task">
           {tasks.map((task,i) => <button type="button" id={`tab-${task.id}`} role="tab" aria-selected={i === 0 ? 'true' : 'false'} aria-controls={`panel-${task.id}`} tabindex={i === 0 ? 0 : -1} data-task={i}>{task.name}</button>)}
         </div>
+        <div class="compare-modes" role="group" aria-label="Comparison layout">
+          <button type="button" data-mode="pair" aria-pressed="true">Side by side</button>
+          <button type="button" data-mode="wipe" aria-pressed="false">Drag to compare</button>
+        </div>
         {tasks.map((task,i) => <div id={`panel-${task.id}`} role="tabpanel" aria-labelledby={`tab-${task.id}`} class="showcase-panel" hidden={i !== 0}>
           <div class="brief-panel">
             <span class="label-chip">{task.category}</span><h3>{task.name}</h3><p class="screen-name">{task.screen}</p><p>{task.description}</p>
@@ -126,6 +137,15 @@ const icons = {
           </div>
           <div class="comparison-stage" style={`--task-color:${task.color}`}>
             {['Claude Opus 5.5','GPT-6.1 Sol'].map((model,index) => <figure class="design-result"><figcaption><span class={`mini-swatch ${index === 0 ? 'purple' : 'coral'}`}></span>{model}</figcaption><button class="screen-open" type="button" data-zoom aria-label={`Enlarge ${model} ${task.name} design`} data-caption={`${task.name} · ${task.screen} · ${model}`}><PaperCrop crop={task.crops[index]} alt={`${model} design for ${task.name}: ${task.screen}`} /><span class="enlarge-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={icons.expand} /></svg></span></button></figure>)}
+          </div>
+          <div class="wipe-stage" hidden style={`--task-color:${task.color};--frame-aspect:${Math.min(...task.crops.map(crop => crop[2]/crop[3]))}`}>
+            <div class="wipe-legend"><span>Claude Opus 5.5</span><span>GPT-6.1 Sol</span></div>
+            <div class="wipe-frame">
+              <div class="wipe-layer"><PaperCrop crop={task.crops[1]} alt={`GPT-6.1 Sol · ${task.screen}`} /></div>
+              <div class="wipe-layer wipe-leading"><PaperCrop crop={task.crops[0]} alt={`Claude Opus 5.5 · ${task.screen}`} /></div>
+              <span class="wipe-line" aria-hidden="true"><b>↔</b></span>
+              <input class="wipe-input" type="range" min="0" max="100" value="50" aria-label={`Reveal the Claude Opus design for ${task.name}`} aria-valuetext="50 percent Claude Opus" />
+            </div>
           </div>
         </div>)}
         <p class="under-caption">Agents decide information hierarchy, layout, components, asset composition, interaction states, and editable structure.</p>
