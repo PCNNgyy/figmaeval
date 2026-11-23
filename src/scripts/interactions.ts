@@ -117,15 +117,30 @@ document.querySelectorAll<HTMLInputElement>('.wipe-input').forEach(input => {
 });
 
 const dialog = $<HTMLDialogElement>('image-dialog');
+const scaleButton = $<HTMLButtonElement>('image-scale');
+function setActualSize(active: boolean) {
+  $('dialog-content').classList.toggle('actual-size', active);
+  scaleButton.setAttribute('aria-pressed', String(active));
+  scaleButton.textContent = active ? 'Fit image' : 'Actual size';
+}
+scaleButton.addEventListener('click', () => setActualSize(scaleButton.getAttribute('aria-pressed') !== 'true'));
 function openDialog(content: HTMLElement, caption: string) {
+  setActualSize(false);
+  scaleButton.hidden = !content.classList.contains('full-frame');
   $('dialog-caption').textContent = caption;
+  const original = $<HTMLAnchorElement>('original-image');
+  original.hidden = !content.classList.contains('full-frame');
+  if (content instanceof HTMLImageElement) original.href = content.src;
   $('dialog-content').replaceChildren(content);
   dialog.showModal();
   document.body.style.overflow = 'hidden';
 }
 document.querySelectorAll<HTMLButtonElement>('[data-zoom]').forEach(button => button.addEventListener('click', () => {
-  const content = button.querySelector('.paper-crop')!.cloneNode(true) as HTMLElement;
-  content.querySelector('img')!.loading = 'eager';
+  const source = button.querySelector('img')!;
+  const content = new Image();
+  content.src = source.dataset.original || source.currentSrc;
+  content.alt = source.alt;
+  content.className = 'full-frame';
   openDialog(content, button.dataset.caption!);
 }));
 document.querySelectorAll<HTMLButtonElement>('[data-figure]').forEach(button => button.addEventListener('click', () => {

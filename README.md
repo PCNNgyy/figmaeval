@@ -4,7 +4,7 @@
 
 Interactive project page for **FigmaEval: A Benchmark for Evaluating AI Agents in Professional UI Design**.
 
-The homepage opens with a canvas preview of four pages from the Foodgo Figma starter file followed by UI frame excerpts for five tasks, with pause, task navigation, and click-to-enlarge controls and links to the benchmark, examples, process, evaluation, results, and resources. Readers can view examples side by side or drag a divider across the two model outputs. The site includes five task comparisons from the paper, a recorded Foodgo screenshot sequence, an eleven-model results table with search and sorting, a six-dimension comparison chart, the paper PDF, and a copyable citation. The site builds to static files for GitHub Pages.
+The homepage opens with a gallery of full-resolution Figma frames for five tasks and four Foodgo starter pages, with pause, task navigation, and click-to-enlarge controls and links to the benchmark, examples, process, evaluation, results, and resources. Readers can view examples side by side or drag a divider across the two model outputs. The site includes five task comparisons from the paper, a recorded Foodgo screenshot sequence, an eleven-model results table with search and sorting, a six-dimension comparison chart, the paper PDF, and a copyable citation. The site builds to static files for GitHub Pages.
 
 ## Local development
 
@@ -24,7 +24,7 @@ npm run preview
 
 Edit `src/data/paper.ts` for project links, author names, model results, task examples, and replay steps. Set `project.arxiv` to the official arXiv abstract URL when available; the paper buttons otherwise open `public/paper/figmaeval.pdf`.
 
-Model scores reproduce the eleven-model main results table in the supplied paper. Overall rubric percentages use the 53-point total; six dimension percentages use their respective maximum scores. Showcase screens are viewport excerpts of the original paper figure. The process viewer shows five selected observations from a recorded Foodgo run, with playback controls for browsing the sequence.
+Model scores reproduce the eleven-model main results table in the supplied paper. Overall rubric percentages use the 53-point total; six dimension percentages use their respective maximum scores. The gallery uses standalone PNG exports of the frames featured in the paper. Each preview preserves the entire frame and links to the original image. The process viewer shows five selected observations from a recorded Foodgo run, with playback controls for browsing the sequence.
 
 The site contains selected presentation images and paper-level aggregate results. It has no Arena service, database, ballots, reviewer records, run logs, credentials, private Figma links, or runtime snapshots.
 

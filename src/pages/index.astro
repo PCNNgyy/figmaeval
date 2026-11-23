@@ -1,16 +1,16 @@
 ---
 import { project, models, dimensions, tasks, steps } from '../data/paper';
-import PaperCrop from '../components/PaperCrop.astro';
 import '../styles/global.css';
 const base = import.meta.env.BASE_URL;
 const asset = (name: string) => `${base}assets/${name}`;
+const frame = (file: string) => asset('frames/' + file);
 const paper = `${base}paper/figmaeval.pdf`;
 const citation = `@misc{figmaeval,\n  title = {${project.title}},\n  author = {${project.authors.join(' and ')}},\n  howpublished = {${project.github}}\n}`;
 const starterPages = [
-  { name: '00 Start Here', crop: [113,180,516,478] },
-  { name: '01 Foundations', crop: [834,172,616,482] },
-  { name: '02 Components', crop: [70,741,618,470] },
-  { name: '04 Media', crop: [810,738,624,496] },
+  { name: '00 Start Here', id: 'brief', width: 2800, height: 7804 },
+  { name: '01 Foundations', id: 'foundations', width: 2800, height: 1892 },
+  { name: '02 Components', id: 'components', width: 2800, height: 1802 },
+  { name: '04 Media', id: 'media', width: 2800, height: 4568 },
 ];
 const icons = {
   paper: 'M7 3h7l5 5v13H7z M14 3v6h5 M10 13h6 M10 17h6',
@@ -32,7 +32,6 @@ const icons = {
     <meta property="og:image" content={new URL(`${base}assets/open-design.png`, Astro.site).href} />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
-    <link rel="preload" as="image" href={asset('open-design.png')} />
     <link rel="canonical" href={new URL(base, Astro.site).href} />
     <title>{project.title}</title>
   </head>
@@ -62,34 +61,34 @@ const icons = {
           </div>
           <div class="design-canvas" aria-label="Figma design canvas preview">
             <div class="canvas-window">
-              <div class="file-bar"><span class="frame-mark" aria-hidden="true"></span><strong>Figma canvas</strong>
-                <label class="sr-only" for="preview-task">Choose a file preview</label>
-                <select id="preview-task" aria-controls="cover-examples">
-                  <option value="starter">Foodgo · Starter file</option>
-                  {tasks.map((task,i) => <option value={i}>{task.name} · UI frames</option>)}
-                </select>
-              </div>
               <div id="cover-examples">
-                <div class="canvas-example starter-board" data-preview="starter">
+                <div class="canvas-example starter-board" data-preview="starter" hidden>
                   {starterPages.map(page => <figure>
-                    <figcaption><span class="frame-mark" aria-hidden="true"></span>{page.name}</figcaption>
+                    <figcaption>{page.name}</figcaption>
                     <button type="button" class="artboard" data-zoom data-caption={`Foodgo starter file · ${page.name}`} aria-label={`Enlarge ${page.name}`}>
-                      <PaperCrop crop={page.crop} alt={`Foodgo Figma starter page: ${page.name}`} eager />
+                      <img src={frame(`starter-${page.id}-preview.webp`)} data-original={frame(`starter-${page.id}.png`)} width={page.width} height={page.height} loading="lazy" alt={`Foodgo Figma starter page: ${page.name}`} />
                     </button>
                   </figure>)}
                 </div>
-                {tasks.map((task,i) => <div class="canvas-example output-board" data-preview={i} hidden>
+                {tasks.map((task,i) => <div class="canvas-example output-board" data-preview={i} hidden={i !== 0} style={`--wash:${task.color}`}>
                   {['Claude Opus 5.5', 'GPT-6.1 Sol'].map((model,j) => <figure>
-                    <figcaption><span class="frame-mark" aria-hidden="true"></span>{model}</figcaption>
+                    <figcaption>{model}</figcaption>
                     <button type="button" class="artboard" data-zoom data-caption={`${task.name} · ${task.screen} · ${model}`} aria-label={`Enlarge ${model} design for ${task.name}`}>
-                      <PaperCrop crop={task.crops[j]} alt={`${model} · ${task.screen}`} />
+                      <img src={frame(task.frames[j].file)} width={task.frames[j].width} height={task.frames[j].height} loading={i === 0 ? "eager" : "lazy"} alt={`${model} · ${task.screen}`} />
                     </button>
                   </figure>)}
                 </div>)}
               </div>
             </div>
             <div class="gallery-controls">
-              <a id="gallery-detail" href="#benchmark">Explore the starter file ↘</a>
+              <div class="file-bar">
+                <label class="sr-only" for="preview-task">Choose a file preview</label>
+                <select id="preview-task" aria-controls="cover-examples">
+                  <option value="starter">Foodgo · Starter file</option>
+                  {tasks.map((task,i) => <option value={i} selected={i === 0}>{task.name}</option>)}
+                </select>
+              </div>
+              <a id="gallery-detail" href="#showcase">{tasks[0].screen} ↘</a>
               <div class="gallery-transport" role="group" aria-label="Gallery playback">
                 <button type="button" id="previous-preview" aria-label="Previous design task">←</button>
                 <button type="button" id="gallery-play" aria-label="Play gallery"><span aria-hidden="true">▶</span></button>
@@ -148,16 +147,16 @@ const icons = {
             <span class="label-chip">{task.category}</span><h3>{task.name}</h3><p class="screen-name">{task.screen}</p><p>{task.description}</p>
             <div class="brief-divider"></div><span class="small-label">DESIGN DECISIONS</span><p class="focus-text">{task.focus}</p>
             <div class="fixed-resource"><span aria-hidden="true">▤</span><div>Shared starter file<small>Brief · Foundations · Components · Media</small></div></div>
-            <p class="source-caption">Selected screen excerpts from the paper.</p>
+            <p class="source-caption">Full Figma frame exports.</p>
           </div>
           <div class="comparison-stage" style={`--task-color:${task.color}`}>
-            {['Claude Opus 5.5','GPT-6.1 Sol'].map((model,index) => <figure class="design-result"><figcaption><span class={`mini-swatch ${index === 0 ? 'purple' : 'coral'}`}></span>{model}</figcaption><button class="screen-open" type="button" data-zoom aria-label={`Enlarge ${model} ${task.name} design`} data-caption={`${task.name} · ${task.screen} · ${model}`}><PaperCrop crop={task.crops[index]} alt={`${model} design for ${task.name}: ${task.screen}`} /><span class="enlarge-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={icons.expand} /></svg></span></button></figure>)}
+            {['Claude Opus 5.5','GPT-6.1 Sol'].map((model,index) => <figure class="design-result"><figcaption><span class={`mini-swatch ${index === 0 ? 'purple' : 'coral'}`}></span>{model}</figcaption><button class="screen-open" type="button" data-zoom aria-label={`Enlarge ${model} ${task.name} design`} data-caption={`${task.name} · ${task.screen} · ${model}`}><img src={frame(task.frames[index].file)} width={task.frames[index].width} height={task.frames[index].height} loading="lazy" alt={`${model} design for ${task.name}: ${task.screen}`} /><span class="enlarge-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={icons.expand} /></svg></span></button></figure>)}
           </div>
-          <div class="wipe-stage" hidden style={`--task-color:${task.color};--frame-aspect:${Math.min(...task.crops.map(crop => crop[2]/crop[3]))}`}>
+          <div class="wipe-stage" hidden style={`--task-color:${task.color};--frame-aspect:${Math.max(...task.frames.map(frame => frame.width/frame.height))}`}>
             <div class="wipe-legend"><span>Claude Opus 5.5</span><span>GPT-6.1 Sol</span></div>
             <div class="wipe-frame">
-              <div class="wipe-layer"><PaperCrop crop={task.crops[1]} alt={`GPT-6.1 Sol · ${task.screen}`} /></div>
-              <div class="wipe-layer wipe-leading"><PaperCrop crop={task.crops[0]} alt={`Claude Opus 5.5 · ${task.screen}`} /></div>
+              <div class="wipe-layer"><img src={frame(task.frames[1].file)} width={task.frames[1].width} height={task.frames[1].height} loading="lazy" alt={`GPT-6.1 Sol · ${task.screen}`} /></div>
+              <div class="wipe-layer wipe-leading"><img src={frame(task.frames[0].file)} width={task.frames[0].width} height={task.frames[0].height} loading="lazy" alt={`Claude Opus 5.5 · ${task.screen}`} /></div>
               <span class="wipe-line" aria-hidden="true"><b>↔</b></span>
               <input class="wipe-input" type="range" min="0" max="100" value="50" aria-label={`Reveal the Claude Opus design for ${task.name}`} aria-valuetext="50 percent Claude Opus" />
             </div>
@@ -196,7 +195,7 @@ const icons = {
       <section id="paper" class="section paper-section"><div class="page-width paper-layout"><div><p class="eyebrow">Resources</p><h2>FigmaEval</h2><p class="paper-full-title">A Benchmark for Evaluating AI Agents in Professional UI Design</p><div class="hero-actions"><a class="button button-primary" href={project.arxiv || paper} target="_blank" rel="noopener noreferrer">{project.arxiv?'Read on arXiv':'Read paper PDF'}</a><a class="button button-white" href={project.github} target="_blank" rel="noopener noreferrer">Explore the code</a></div></div><div class="abstract"><h3>Abstract</h3><p>Recent advances in AI agents have enabled autonomous UI design using professional tools such as Figma, yet evaluating their design capabilities remains challenging due to the open-ended nature of design tasks and the absence of unique ground truths.</p><p>FigmaEval comprises 84 tasks and 783 screens derived from real-world Figma design files. It standardizes requirements and design resources while leaving layout, visual hierarchy, and component composition open. Twenty-two expert-grounded rubrics and blinded professional comparisons assess design quality beyond reference similarity.</p><p>Evaluating eleven models reveals substantial agreement between rubric-based assessments and human preferences, alongside distinct design practices and quality–efficiency trade-offs.</p></div></div><div class="page-width citation-block"><div><h3>Cite this work</h3><button id="copy-citation" type="button">Copy BibTeX</button></div><pre><code id="citation">{citation}</code></pre><p id="copy-status" class="sr-only" aria-live="polite"></p></div></section>
     </main>
     <footer class="page-width site-footer"><a href="#" class="footer-brand">FigmaEval<span>.</span></a><p>Professional UI design. Open-ended evaluation.</p><a href="https://github.com/RomanHauksson/academic-project-astro-template" target="_blank" rel="noopener noreferrer">Adapted from the Academic Project Astro Template</a></footer>
-    <dialog id="image-dialog" aria-labelledby="dialog-caption"><div class="dialog-toolbar"><p id="dialog-caption"></p><button id="close-dialog" type="button" aria-label="Close enlarged image">×</button></div><div id="dialog-content"></div></dialog>
+    <dialog id="image-dialog" aria-labelledby="dialog-caption"><div class="dialog-toolbar"><p id="dialog-caption"></p><button id="image-scale" type="button" aria-pressed="false" hidden>Actual size</button><a id="original-image" target="_blank" rel="noopener noreferrer" hidden>Open original ↗</a><button id="close-dialog" type="button" aria-label="Close enlarged image">×</button></div><div id="dialog-content"></div></dialog>
     <script type="application/json" id="page-data" set:html={JSON.stringify({ models, dimensions, tasks, steps, base }).replace(/</g, '\\u003c')} />
     <script>
       import '../scripts/interactions';

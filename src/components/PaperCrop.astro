@@ -1,8 +1,0 @@
----
-interface Props { crop: number[]; alt: string; eager?: boolean; class?: string; }
-const { crop: [x,y,w,h], alt, eager = false, class: className = '' } = Astro.props;
-const source = `${import.meta.env.BASE_URL}assets/open-design.png`;
----
-<div class={`paper-crop ${className}`} style={`aspect-ratio:${w}/${h}`}>
-  <img src={source} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" style={`width:${3948/w*100}%;left:${-x/w*100}%;top:${-y/h*100}%`} />
-</div>
