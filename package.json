@@ -1,0 +1,20 @@
+{
+  "name": "figmaeval-project-page",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --host 0.0.0.0",
+    "build": "astro check && astro build",
+    "preview": "astro preview --host 0.0.0.0",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "astro": "7.4.13",
+    "@astrojs/check": "0.9.9",
+    "typescript": "5.9.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.0"
+  }
+}
