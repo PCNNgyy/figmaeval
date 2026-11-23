@@ -10,15 +10,27 @@ const escapeHtml = (value: string) => value.replace(/[&<>"']/g, c => ({'&':'&amp
 const tabs = [...document.querySelectorAll<HTMLButtonElement>('[data-task]')];
 const previewTask = $<HTMLSelectElement>('preview-task');
 const previews = document.querySelectorAll<HTMLElement>('[data-preview]');
+function selectPreview(value: string) {
+  previewTask.value = value;
+  previews.forEach(preview => { preview.hidden = preview.dataset.preview !== value; });
+  const detail = $<HTMLAnchorElement>('gallery-detail');
+  const starter = value === 'starter';
+  detail.textContent = starter ? 'Explore the starter file ↘' : data.tasks[Number(value)].screen + ' ↘';
+  detail.hash = starter ? 'benchmark' : 'showcase';
+}
+
+function showPreview(value: string) {
+  if (value === 'starter') selectPreview(value);
+  else selectTask(Number(value));
+}
+
 previewTask.addEventListener('change', () => {
   pauseGallery();
-  selectTask(previewTask.selectedIndex);
+  showPreview(previewTask.value);
 });
 
 function selectTask(index: number, focus = false) {
-  previewTask.selectedIndex = index;
-  $('gallery-detail').textContent = data.tasks[index].screen + ' ↘';
-  previews.forEach((preview,i) => { preview.hidden = i !== index; });
+  selectPreview(String(index));
   tabs.forEach((tab,i) => {
     tab.setAttribute('aria-selected', String(i === index));
     tab.tabIndex = i === index ? 0 : -1;
@@ -35,7 +47,6 @@ tabs.forEach((tab,index) => {
 });
 
 const canvas = document.querySelector<HTMLElement>('.design-canvas')!;
-const canvasWindow = canvas.querySelector<HTMLElement>('.canvas-window')!;
 const galleryPlay = $<HTMLButtonElement>('gallery-play');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 let playing = !reducedMotion.matches;
@@ -43,14 +54,15 @@ let inView = false;
 let slideTimer: ReturnType<typeof setTimeout> | undefined;
 
 function advanceGallery(delta: number) {
-  selectTask((previewTask.selectedIndex + delta + tabs.length) % tabs.length);
+  const options = previewTask.options;
+  const next = (previewTask.selectedIndex + delta + options.length) % options.length;
+  showPreview(options[next].value);
 }
 
 function scheduleGallery() {
   clearTimeout(slideTimer);
   galleryPlay.setAttribute('aria-label', playing ? 'Pause gallery' : 'Play gallery');
   galleryPlay.firstElementChild!.textContent = playing ? 'Ⅱ' : '▶';
-  canvas.toggleAttribute('data-playing', playing && inView && !document.hidden);
   if (playing && inView && !document.hidden) {
     slideTimer = setTimeout(() => {
       advanceGallery(1);
@@ -77,19 +89,6 @@ new IntersectionObserver(([entry]) => {
   inView = entry.isIntersecting;
   scheduleGallery();
 }, { threshold: 0.25 }).observe(canvas);
-
-canvasWindow.addEventListener('pointermove', event => {
-  if (event.pointerType !== 'mouse' || reducedMotion.matches) return;
-  const rect = canvasWindow.getBoundingClientRect();
-  const dx = (event.clientX - rect.left) / rect.width - 0.5;
-  const dy = (event.clientY - rect.top) / rect.height - 0.5;
-  canvasWindow.style.setProperty('--tilt-x', (dy * -7) + 'deg');
-  canvasWindow.style.setProperty('--tilt-y', (dx * 9) + 'deg');
-});
-canvasWindow.addEventListener('pointerleave', () => {
-  canvasWindow.style.removeProperty('--tilt-x');
-  canvasWindow.style.removeProperty('--tilt-y');
-});
 
 const arrivals = new IntersectionObserver(entries => {
   for (const entry of entries) {

@@ -4,7 +4,7 @@
 
 Interactive project page for **FigmaEval: A Benchmark for Evaluating AI Agents in Professional UI Design**.
 
-The homepage opens with a five-task animated gallery of paired model outputs, with pause, task navigation, and click-to-enlarge controls and links to the benchmark, examples, process, evaluation, results, and resources. Readers can view examples side by side or drag a divider across the two model outputs. The site includes five task comparisons from the paper, a recorded Foodgo screenshot sequence, an eleven-model results table with search and sorting, a six-dimension comparison chart, the paper PDF, and a copyable citation. The site builds to static files for GitHub Pages.
+The homepage opens with a canvas preview of four pages from the Foodgo Figma starter file followed by UI frame excerpts for five tasks, with pause, task navigation, and click-to-enlarge controls and links to the benchmark, examples, process, evaluation, results, and resources. Readers can view examples side by side or drag a divider across the two model outputs. The site includes five task comparisons from the paper, a recorded Foodgo screenshot sequence, an eleven-model results table with search and sorting, a six-dimension comparison chart, the paper PDF, and a copyable citation. The site builds to static files for GitHub Pages.
 
 ## Local development
 

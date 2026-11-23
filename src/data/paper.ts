@@ -31,11 +31,11 @@ export const models = [
 ];
 
 export const tasks = [
-  { id: 'foodgo', name: 'Foodgo', category: 'Food ordering', screen: 'Burger customization', description: 'Present burger customization with spice level, portion controls, toppings, side options, and a clear order summary.', focus: 'Hierarchy, controls & asset composition', color: '#fff0ef', crops: [[1608,128,569,1207],[2265,128,570,1207]] },
-  { id: 'fitness', name: 'Fitness', category: 'Health & fitness', screen: 'Explore', description: 'Organize a fitness discovery screen with featured workouts, exercise recommendations, challenges, and navigation.', focus: 'Content grouping & discovery', color: '#eff6df', crops: [[94,1566,322,827],[527,1566,385,827]] },
-  { id: 'mindful', name: 'MindfulMentor', category: 'Wellbeing', screen: 'Exam mode', description: 'Help students stay focused during exam preparation with a countdown, quick actions, and calming support.', focus: 'Visual emphasis & action priority', color: '#eaf5ee', crops: [[1068,1566,337,827],[1524,1566,362,827]] },
+  { id: 'foodgo', name: 'Foodgo', category: 'Food ordering', screen: 'Burger customization', description: 'Present burger customization with spice level, portion controls, toppings, side options, and a clear order summary.', focus: 'Hierarchy, controls & asset composition', color: '#fff0ef', crops: [[1615,186,555,1106],[2272,186,556,1106]] },
+  { id: 'fitness', name: 'Fitness', category: 'Health & fitness', screen: 'Explore', description: 'Organize a fitness discovery screen with featured workouts, exercise recommendations, challenges, and navigation.', focus: 'Content grouping & discovery', color: '#eff6df', crops: [[97,1609,316,756],[530,1609,379,756]] },
+  { id: 'mindful', name: 'MindfulMentor', category: 'Wellbeing', screen: 'Exam mode', description: 'Help students stay focused during exam preparation with a countdown, quick actions, and calming support.', focus: 'Visual emphasis & action priority', color: '#eaf5ee', crops: [[1070,1608,333,762],[1526,1608,358,762]] },
   { id: 'wardrobe', name: 'Wardrobe', category: 'Lifestyle', screen: 'Scan an item', description: 'Design a wardrobe scanning flow that frames a garment, presents detected details, and supports saving an item.', focus: 'Asset placement & interaction states', color: '#f4ede5', crops: [[2042,1566,362,827],[2504,1566,362,827]] },
-  { id: 'shopping', name: 'Shopping', category: 'E-commerce', screen: 'Product details', description: 'Present a product gallery, price, ratings, size selection, delivery information, and purchase actions.', focus: 'Information density & purchase flow', color: '#f3edf7', crops: [[3054,1566,320,827],[3470,1566,363,827]] },
+  { id: 'shopping', name: 'Shopping', category: 'E-commerce', screen: 'Product details', description: 'Present a product gallery, price, ratings, size selection, delivery information, and purchase actions.', focus: 'Information density & purchase flow', color: '#f3edf7', crops: [[3056,1605,316,781],[3472,1605,359,781]] },
 ];
 
 export const steps = [
