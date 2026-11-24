@@ -41,11 +41,3 @@ SITE_URL=https://pcnngyy.github.io BASE_PATH=/figmaeval/ npm run build
 ```
 
 The project page is published at `https://pcnngyy.github.io/figmaeval/`. The generated `dist/` directory can also be served by any static host. Local development uses `http://localhost:4321/figmaeval/`. This repository contains no Sites hosting identity or account configuration.
-
-## Credits
-
-The split research introduction, interactive preview, separate author row, and section navigation take layout inspiration from the [OpenMobile-2 project page](https://os-copilot.github.io/OpenMobile2-Home/).
-
-Adapted from [Roman Hauksson's Academic Project Astro Template](https://github.com/RomanHauksson/academic-project-astro-template), derived from the Eliahu Horwitz academic project page and Nerfies. Template-derived material is provided under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), with attribution retained in the page footer. This does not grant a blanket license to the paper, benchmark, or showcased design assets.
-
-DM Sans, Manrope, and Instrument Serif are self-hosted. Their SIL Open Font License notices are included in `public/fonts/`.
