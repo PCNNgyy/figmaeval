@@ -24,6 +24,10 @@ dialog{border:1px solid #e5dff0;border-radius:14px;padding:0;max-width:1100px;wi
 .research-byline img { width: 110px; height: auto; }
 .research-byline p { display: flex; flex-wrap: wrap; gap: 1px 8px; color: #545064; font-size:18px; }
 .research-byline span { white-space: nowrap; }
+.author-details { display: grid; gap: 4px; }
+.author-details p:first-child { font-weight: 600; }
+.author-details [aria-label="Affiliations"] { column-gap: 1em; }
+.author-details [aria-label="Affiliations"] span { white-space: normal; }
 .overview-section { background: #f6f5fa; border-block: 1px solid var(--line); }
 .section { padding-block: clamp(54px, 6vw, 82px); }
 .eyebrow { text-transform: uppercase; }

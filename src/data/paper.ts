@@ -4,7 +4,16 @@ export const project = {
   description: 'Evaluating AI agents on open-ended, multi-screen design tasks in native Figma, with expert-grounded rubrics and professional designer preferences.',
   github: 'https://github.com/PCNNgyy/figma-design-benchmark',
   arxiv: '',
-  authors: ['Xinyue Huang', 'Yongyong Gao', 'Zhengyuan Pan', 'Xinya Liu', 'Zheng Ma', 'Lewei Lu', 'Dahua Lin'],
+  affiliations: ['Sun Yat-sen University', 'Southern University of Science and Technology', 'Xiamen University', 'SenseTime'],
+  authors: [
+    { name: 'Xinyue Huang', affiliations: [1], equalContribution: true },
+    { name: 'Yongyong Gao', affiliations: [2], equalContribution: true },
+    { name: 'Zhengyuan Pan', affiliations: [3, 4], equalContribution: true },
+    { name: 'Xinya Liu', affiliations: [4], equalContribution: false },
+    { name: 'Zheng Ma', affiliations: [4], equalContribution: false },
+    { name: 'Lewei Lu', affiliations: [4], equalContribution: false },
+    { name: 'Dahua Lin', affiliations: [4], equalContribution: false },
+  ],
 };
 
 export const dimensions = [

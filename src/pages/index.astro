@@ -5,7 +5,7 @@ const base = import.meta.env.BASE_URL;
 const asset = (name: string) => `${base}assets/${name}`;
 const frame = (file: string) => asset('frames/' + file);
 const paper = `${base}paper/figmaeval.pdf`;
-const citation = `@misc{figmaeval,\n  title = {${project.title}},\n  author = {${project.authors.join(' and ')}},\n  howpublished = {${project.github}}\n}`;
+const citation = `@misc{figmaeval,\n  title = {${project.title}},\n  author = {${project.authors.map(author => author.name).join(' and ')}},\n  howpublished = {${project.github}}\n}`;
 const starterPages = [
   { name: '00 Start Here', id: 'brief', width: 2800, height: 7804 },
   { name: '01 Foundations', id: 'foundations', width: 2800, height: 1892 },
@@ -103,7 +103,13 @@ const icons = {
       </div>
       <div class="research-byline page-width">
         <img src={asset('sensenova-logo.png')} alt="SenseNova" width="144" height="54" />
-        <p aria-label="Authors">{project.authors.map((name,i) => <span>{name}{i < project.authors.length - 1 ? ',' : ''}</span>)}</p>
+        <div class="author-details">
+          <p aria-label="Authors">{project.authors.map((author, i) => (
+            <span>{author.name}<sup>{author.affiliations.join(',')}{author.equalContribution && '*'}</sup>{i < project.authors.length - 1 ? ',' : ''}</span>
+          ))}</p>
+          <p aria-label="Affiliations">{project.affiliations.map((institution, i) => <span><sup>{i + 1}</sup>{institution}</span>)}</p>
+          <p>* These authors contributed equally.</p>
+        </div>
       </div>
 
       <section id="overview" class="section overview-section">
