@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  <meta name="arena-base" content="">
+  <title>Figma 模型评分排名 · Design Arena</title>
+  <link rel="stylesheet" href="./arena.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">◈</span><div>Design Arena<small>Figma 设计模型评分</small></div></div>
+    <div class="header-actions"><a class="header-review" href="./?view=review">参与评审</a><span id="identity" class="muted"></span><button id="logout" class="quiet hidden">退出</button></div>
+  </header>
+  <main id="app"><div class="loading">正在载入…</div></main>
+  <div id="toast" role="status" class="toast hidden"></div>
+  <dialog id="image-dialog" aria-label="完整原图查看器"><div class="image-viewer-header"><div class="zoom-nav"><button id="prev-image">← 上一张</button><span id="image-number"></span><button id="next-image">下一张 →</button></div><button id="close-image" class="close-dialog" aria-label="关闭大图">×</button></div><div class="zoom-tools"><button id="image-size">原始尺寸 1:1</button><a id="original-image" target="_blank" rel="noopener noreferrer">新标签页打开完整原图 ↗</a><span>保留完整高度 · 上下滚动查看长图</span></div><div id="image-scroll" tabindex="0" role="region" aria-label="完整原图滚动区域"><p id="image-load-state" role="status" hidden></p><img id="zoom-image" decoding="async" alt="03 Workspace 产品画板大图"><p id="image-end" hidden>已到这张原图的底部</p></div></dialog>
+  <script type="module" src="./arena.js"></script>
+</body>
+</html>

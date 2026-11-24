@@ -1,0 +1,77 @@
+{
+  "protocol": "figmaeval-cvpr2027/v1",
+  "scope": "subset",
+  "claude_bin": "claude",
+  "node_bin": "node",
+  "timeout_seconds": 1200,
+  "gate_policy": "required",
+  "concurrency": 8,
+  "repetitions": 3,
+  "seeds": [
+    42,
+    102,
+    423
+  ],
+  "judges": [
+    {
+      "id": "judge-opus",
+      "paper_model": "Claude Opus 5.5",
+      "cli_model": "claude-opus-5-5",
+      "base_url": "https://gateway.example.invalid",
+      "api_key_env": "MODEL_API_KEY",
+      "returned_model_prefixes": [
+        "claude-opus-5-5"
+      ],
+      "effort": "low",
+      "max_output_tokens": 16384,
+      "seed_transport": "request-body"
+    },
+    {
+      "id": "judge-sol",
+      "paper_model": "GPT-6.1 Sol",
+      "cli_model": "gpt-6.1-sol",
+      "base_url": "https://gateway.example.invalid",
+      "api_key_env": "MODEL_API_KEY",
+      "returned_model_prefixes": [
+        "gpt-6.1-sol"
+      ],
+      "effort": "low",
+      "max_output_tokens": 16384,
+      "seed_transport": "request-body"
+    },
+    {
+      "id": "judge-deepseek",
+      "paper_model": "DeepSeek V4.1 Flash",
+      "cli_model": "deepseek-v4.1-flash",
+      "base_url": "https://gateway.example.invalid",
+      "api_key_env": "MODEL_API_KEY",
+      "returned_model_prefixes": [
+        "deepseek-v4.1-flash"
+      ],
+      "effort": "low",
+      "max_output_tokens": 16384,
+      "seed_transport": "request-body"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "task-001-opus",
+      "task_id": "task-001",
+      "design_model_name": "Claude Opus 5.5",
+      "query_file": "task-query.txt",
+      "expected_screens": 2,
+      "images": [
+        {
+          "path": "screens/01.png",
+          "node_id": "10:1"
+        },
+        {
+          "path": "screens/02.png",
+          "node_id": "10:2"
+        }
+      ],
+      "inventory_file": "screen-inventory.json",
+      "layer_summary_file": "layer-summary.json"
+    }
+  ]
+}

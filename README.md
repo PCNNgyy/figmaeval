@@ -1,12 +1,16 @@
 # FigmaEval
 
-[Project page](https://pcnngyy.github.io/figmaeval/) · [Benchmark code](https://github.com/PCNNgyy/figma-design-benchmark)
+[Project page](https://pcnngyy.github.io/figmaeval/) · [Benchmark code and setup](benchmark/) · [Paper PDF](https://pcnngyy.github.io/figmaeval/paper/figmaeval.pdf)
 
-Interactive project page for **FigmaEval: A Benchmark for Evaluating AI Agents in Professional UI Design**.
+Benchmark implementation and interactive project page for **FigmaEval: A Benchmark for Evaluating AI Agents in Professional UI Design**.
+
+The [benchmark](benchmark/README.md) includes native Figma inference, three-judge rubric scoring, and the blinded human Arena framework. To run it, start in the `benchmark/` directory and follow its setup instructions. The Arena ships with synthetic examples. Live rounds, ballots, and reviewer data are private runtime inputs.
+
+## Project website
 
 The homepage opens with a gallery of full-resolution Figma frames for five tasks and four Foodgo starter pages, with pause, task navigation, and click-to-enlarge controls and links to the benchmark, examples, process, evaluation, results, and resources. Readers can view examples side by side or drag a divider across the two model outputs. The site includes five task comparisons from the paper, a recorded Foodgo screenshot sequence, an eleven-model results table with search and sorting, a six-dimension comparison chart, the paper PDF, and a copyable citation. The site builds to static files for GitHub Pages.
 
-## Local development
+## Website development
 
 Requires Node.js 22.23.4 or later.
 
@@ -30,13 +34,13 @@ The site contains selected presentation images and paper-level aggregate results
 
 ## GitHub Pages
 
-The included workflow builds and deploys this directory as a standalone repository. Enable **Settings → Pages → Source → GitHub Actions** in the destination repository. Configure `SITE_URL` and `BASE_PATH` for manual builds:
+The Pages workflow builds the website at the repository root and deploys its static output. Enable **Settings → Pages → Source → GitHub Actions** in the destination repository. Configure `SITE_URL` and `BASE_PATH` for manual builds:
 
 ```sh
 SITE_URL=https://pcnngyy.github.io BASE_PATH=/figmaeval/ npm run build
 ```
 
-The standalone website repository is `PCNNgyy/figmaeval`, with the Pages URL `https://pcnngyy.github.io/figmaeval/`. The generated `dist/` directory can also be served by any static host. Local development uses `http://localhost:4321/figmaeval/`. This repository contains no Sites hosting identity or account configuration.
+The project page is published at `https://pcnngyy.github.io/figmaeval/`. The generated `dist/` directory can also be served by any static host. Local development uses `http://localhost:4321/figmaeval/`. This repository contains no Sites hosting identity or account configuration.
 
 ## Credits
 

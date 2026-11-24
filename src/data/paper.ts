@@ -2,7 +2,7 @@ export const project = {
   name: 'FigmaEval',
   title: 'FigmaEval: A Benchmark for Evaluating AI Agents in Professional UI Design',
   description: 'Evaluating AI agents on open-ended, multi-screen design tasks in native Figma, with expert-grounded rubrics and professional designer preferences.',
-  github: 'https://github.com/PCNNgyy/figma-design-benchmark',
+  github: 'https://github.com/PCNNgyy/figmaeval',
   arxiv: '',
   affiliations: ['Sun Yat-sen University', 'Southern University of Science and Technology', 'Xiamen University', 'SenseTime'],
   authors: [

@@ -1,0 +1,41 @@
+{
+  "board_count": 2,
+  "boards": [
+    {
+      "id": "3:2",
+      "name": "01_Catalog",
+      "size": "360×640",
+      "nodes": 20,
+      "max_depth": 3,
+      "instances": 2,
+      "texts": 8,
+      "images": 2,
+      "types": [
+        "text×8",
+        "instance×2"
+      ],
+      "names": [
+        "Header",
+        "Catalog"
+      ]
+    },
+    {
+      "id": "3:3",
+      "name": "02_Detail",
+      "size": "360×640",
+      "nodes": 15,
+      "max_depth": 3,
+      "instances": 1,
+      "texts": 6,
+      "images": 1,
+      "types": [
+        "text×6",
+        "instance×1"
+      ],
+      "names": [
+        "Header",
+        "Details"
+      ]
+    }
+  ]
+}

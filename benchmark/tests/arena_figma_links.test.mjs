@@ -1,0 +1,30 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import fs from 'node:fs';import os from 'node:os';import path from 'node:path';import {createHash,randomBytes} from 'node:crypto';
+import {encryptFigmaCandidate,decryptFigmaCandidate,provisionAnonymousFigmaLinks,readAnonymousFigmaLinks} from '../server/arena_figma_links.mjs';
+import {createArenaStore,createArenaApp} from '../server/benchmark_arena.mjs';import {tournamentProtocol} from '../server/arena_tournament.mjs';
+const hash=x=>createHash('sha256').update(x).digest('hex');
+test('authenticated encryption is reversible only with the cohort key and rejects altered links',()=>{
+ const key=randomBytes(32),digest=hash('cohort'),id='anonymous-candidate';const token=encryptFigmaCandidate(key,digest,id);
+ assert.equal(decryptFigmaCandidate(key,digest,token),id);assert.ok(!token.includes(id));
+ assert.throws(()=>decryptFigmaCandidate(randomBytes(32),digest,token));assert.throws(()=>decryptFigmaCandidate(key,hash('other'),token));assert.throws(()=>decryptFigmaCandidate(key,digest,token.replace('v1.','v2.')));
+ const parts=token.split('.');parts[2]=(parts[2][0]==='A'?'B':'A')+parts[2].slice(1);assert.throws(()=>decryptFigmaCandidate(key,digest,parts.join('.')));
+});
+test('verified anonymous links open the frozen workspace and specific screen without exposing model slugs or changing votes',async t=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'arena-figma-links-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+ const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aXioAAAAASUVORK5CYII=','base64');
+ const candidates=Array.from({length:4},(_,j)=>{const file=`media/${hash(String(j)).slice(0,24)}/0.png`;fs.mkdirSync(path.dirname(path.join(dir,file)),{recursive:true});fs.writeFileSync(path.join(dir,file),png);return{id:hash(String(j)).slice(0,24),case_id:'task',title:'Task',source_url:'https://www.figma.com/design/Source',source_query:'Read task',model_id:'model-'+j,model_name:'SECRET_MODEL_'+j,run_id:'run'+j,workspace_id:'3:1',workspace_url:`https://www.figma.com/design/Copy${j}/SECRET_MODEL_${j}?page-id=3%3A1&node-id=3-1`,generation_ended:true,trace_status:'verified',screen_check:{passed:true},cc_score:null,evidence_status:'cached-complete',images:[{file,width:1,height:1,sha256:hash(png),node_id:'4:1'}]};});
+ const snapshot={kind:'figma-human-arena-snapshot',version:3,name:'Test',protocol:tournamentProtocol(),review_mode:'screenshots-only',candidates};fs.writeFileSync(path.join(dir,'snapshot.json'),JSON.stringify(snapshot));
+ const proof=new Map(candidates.map((c,j)=>[c.id,{file_key:'Copy'+j,alias:'Arena v2 · 作品 '+String(j).padStart(12,'0'),status:'renamed',final_title:'Arena · 匿名作品',verified_at:new Date().toISOString()}]));
+ assert.equal(provisionAnonymousFigmaLinks(dir,proof).candidates,4);const digest=hash(JSON.stringify(snapshot)),links=readAnonymousFigmaLinks(dir,snapshot,digest),first=links.publicLink(candidates[0].id);
+ provisionAnonymousFigmaLinks(dir,proof);assert.deepEqual(readAnonymousFigmaLinks(dir,snapshot,digest).publicLink(candidates[0].id),first);assert.equal(fs.statSync(path.join(dir,'figma-links-key.json')).mode&0o777,0o600);
+ const store=createArenaStore(dir,snapshot,{incrementalRanking:true}),server=createArenaApp(store,{basePath:'/arena-v2/new13'}).listen(0,'127.0.0.1');await new Promise(r=>server.once('listening',r));t.after(async()=>{await new Promise(r=>server.close(r));store.close();});
+ const base=`http://127.0.0.1:${server.address().port}/arena-v2/new13`,login=await fetch(base+'/api/session',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({access:store.credentials.reviewers[0].access})}),cookie=login.headers.get('set-cookie').split(';')[0];
+ const request=(url)=>fetch(base+url,{headers:{cookie},redirect:'manual'});
+ assert.equal((await fetch(base+first.url,{redirect:'manual'})).status,403);
+ const pair=store.next('reviewer-1').pair;assert.ok(Object.values(pair.drafts).every(d=>d.url.startsWith('/api/review/figma/')));assert.ok(!JSON.stringify(pair.drafts).includes('SECRET_MODEL'));
+ const workspace=await request(first.url);assert.equal(workspace.status,302);assert.equal(workspace.headers.get('location'),'https://www.figma.com/design/Copy0/?page-id=3%3A1&node-id=3-1');
+ const screen=await request(first.url+'?screen=0');assert.equal(screen.status,302);assert.ok(screen.headers.get('location').includes('node-id=4-1'));assert.equal((await request(first.url+'?screen=99')).status,404);
+ assert.equal(store.db.prepare('SELECT COUNT(*) n FROM ballots').get().n,0);assert.equal(store.db.prepare('SELECT COUNT(*) n FROM views').get().n,0);
+ const decoded=links.resolve(first.figma_alias);assert.equal(decoded.candidate.model_name,'SECRET_MODEL_0');
+ proof.get(candidates[0].id).final_title='GPT model';assert.throws(()=>provisionAnonymousFigmaLinks(dir,proof),/not been verified/);
+});

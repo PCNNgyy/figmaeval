@@ -1,0 +1,1 @@
+请读取 https://www.figma.com/design/SourceStarter001/ 中的产品规格、规范、组件和素材，完成要求的所有原生可编辑 Figma 界面。布局和视觉表达由你独立决定。

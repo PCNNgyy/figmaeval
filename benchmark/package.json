@@ -1,0 +1,22 @@
+{
+  "name": "figma-design-benchmark",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.16"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "test:python": "python -m unittest discover -s tests -p \"test_*.py\"",
+    "arena": "node scripts/benchmark-arena.mjs",
+    "demo": "node scripts/arena-demo.mjs",
+    "paper:inference": "python3 scripts/claude_code_harness.py inference",
+    "paper:judge": "python3 scripts/claude_code_harness.py judge",
+    "release:check": "python3 scripts/check-release.py",
+    "release:check:working": "python3 scripts/check-release.py --working-tree"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
